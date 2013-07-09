@@ -23,8 +23,10 @@ Run with (Get your IP first: `hostname -I`):
     python manage.py runserver 0.0.0.0:8000
 
 
-To view approved tweets: http://yourip:8000
-To approve/deny tweets: http://yourip:8000/approvetweets/
-To get tweets in JSON: http://yourip:8000/showtweets/
-To get tweets in JSON after a certain tweet id:
-http://yourip:8000/showtweets/?after_id=12345678
+To view approved tweets: `http://yourip:8000`
+
+To approve/deny tweets: `http://yourip:8000/approvetweets/`
+
+To view approved tweets as JSON: `http://yourip:8000/showtweets/`
+
+To view approved tweets as JSON after a certain tweet id: `http://yourip:8000/showtweets/?after_id=12345678`
