@@ -8,15 +8,16 @@ fiddling with some of the settings). To install Django 1.2.3:
 
     pip install Django=1.2.3
 
-You will have to be root (or use sudo) and make sure you don't already have
-Django installed (or use virtualenv).
+Also requires [twitter](https://pypi.python.org/pypi/twitter):
+
+    pip install twitter
 
 Use
 ===
 
-Edit `setting.py` to point to /wherever/you/placed/twitterclean/ in several places and make sure you generate the database with:
-
-    python manage.py syncdb
+- Edit `setting.py` to point to /wherever/you/placed/twitterclean/ in several places. 
+- Add your Oauth stuff in twitterviewer/views.py
+- Make sure you generate the database: `python manage.py syncdb`
 
 Run with (Get your IP first: `hostname -I`):
 
