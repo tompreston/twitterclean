@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tweet Viewer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block css %}
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/tweetviewer.css" rel="stylesheet" type="text/css" >
+    {% endblock %}
+</head>
+<body>
+<div id="searchterm"><p>{{ searchterm }}</p></div>
+<div id="tweetcontainer" class="container-fluid">
+
+    {% if tweets %}
+
+    {% for tweet in tweets %}
+    <div class="row-fluid"><div class="tweet span6 offset3">
+        <span class="author">
+            <img src="{{ tweet.author_pic_url }}" class="img-rounded">
+            &nbsp;{{ tweet.author }}&nbsp;{{ tweet.date }}
+        </span>
+        <p>{{ tweet.text }}</p>
+    </div></div>
+    {% endfor %}
+
+    {% else %}
+
+    <div class="row-fluid"><div class="notweet span6 offset3">
+        <p>No Tweets.</p>
+    </div></div>
+
+    {% endif %}
+
+</div>
+
+{% block js %}
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/pretty.js"></script>
+<script src="js/tweetfall.js"></script>
+{% endblock %}
+
+</body>
+</html>

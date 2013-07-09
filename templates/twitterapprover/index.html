@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+<head>
+    <title>Approve this tweet</title>
+</head>
+<body>
+{{ tweet_text }}<br>
+<a href="/approvetweets/approve/{{ tweet_id }}/"><button>Approve</button></a>
+<a href="/approvetweets/deny/{{ tweet_id }}/"><button>Deny</button></a>
+</body>
+</html>
