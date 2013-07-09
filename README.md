@@ -15,7 +15,7 @@ Also requires [twitter](https://pypi.python.org/pypi/twitter):
 Use
 ===
 
-- Edit `setting.py` to point to /wherever/you/placed/twitterclean/ in several places. 
+- Edit `setting.py` and `urls.py` to point to /wherever/you/placed/twitterclean/ (several changes).
 - Add your Oauth stuff in twitterviewer/views.py
 - Make sure you generate the database: `python manage.py syncdb`
 
