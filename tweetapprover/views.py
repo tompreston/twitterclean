@@ -9,11 +9,11 @@ import twitter
 
 DEFAULT_SEARCH_TERM = "#animation13"
 
-CONSUMER_KEY = "6eMHbsNHcxRLIzF4wZWf6g"
-CONSUMER_SECRET = "BDL5j87310UBqOtRzMLo2wP93xc8BZ3xh3IGAIjzB0A"
+CONSUMER_KEY = ""
+CONSUMER_SECRET = ""
 
-OAUTH_TOKEN = "611522743-1BqkqHroWJwkwBRuPKI4GwETVkkY9wMOQBhG43s4"
-OAUTH_SECRET = "D8q0OVFmB0TcdyHgBf5ODCPW9zIrOfas74rLsgR8"
+OAUTH_TOKEN = ""
+OAUTH_SECRET = ""
 
 
 def index(request):
@@ -92,7 +92,6 @@ def getmoretweets(request):
         'message': 'Added {} more tweets.'.format(len(latest_tweets)),
         'tweets_added': len(latest_tweets),
     }
-    return redirect(index)
 
 
 def get_search_term():
