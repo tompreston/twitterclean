@@ -1,13 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
-from tweetapprover.models import ApprovableTweet
+from tweetapprover.models import ApprovableTweet, Setting
 from datetime import datetime
 from django.utils import simplejson
 import time
 import twitter
 
 
-SEARCH_TERM = "#raspberrypi"
+DEFAULT_SEARCH_TERM = "#animation13"
 
 CONSUMER_KEY = "6eMHbsNHcxRLIzF4wZWf6g"
 CONSUMER_SECRET = "BDL5j87310UBqOtRzMLo2wP93xc8BZ3xh3IGAIjzB0A"
@@ -37,11 +37,11 @@ def approve(request, tweet_id):
         tweet.status = ApprovableTweet.APPROVED
         tweet.save()
     except Exception as e:
-        message = { 'approved': False, 'message': e}
+        message = {'approved': False, 'message': e}
         return HttpResponse(
             simplejson.dumps(message), mimetype="application/json")
     else:
-        message = { 'approved': True, 'message': 'Tweet was approved.'}
+        message = {'approved': True, 'message': 'Tweet was approved.'}
         return redirect(index)
 
 
@@ -51,27 +51,29 @@ def deny(request, tweet_id):
         tweet.status = ApprovableTweet.DENIED
         tweet.save()
     except Exception as e:
-        message = { 'denied': False, 'message': e}
+        message = {'denied': False, 'message': e}
         return HttpResponse(
             simplejson.dumps(message), mimetype="application/json")
     else:
-        message = { 'denied': True, 'message': 'Tweet was denied.'}
+        message = {'denied': True, 'message': 'Tweet was denied.'}
         # return HttpResponse(
         #     simplejson.dumps(message), mimetype="application/json")
         return redirect(index)
 
 
 def getmoretweets(request):
+    search_term = get_search_term()
+
     t = twitter.Twitter(auth=twitter.OAuth(
-            OAUTH_TOKEN, OAUTH_SECRET, CONSUMER_KEY, CONSUMER_SECRET))
+        OAUTH_TOKEN, OAUTH_SECRET, CONSUMER_KEY, CONSUMER_SECRET))
     try:
         latest_db_tweet = ApprovableTweet.objects.latest('tweet_date')
     except ApprovableTweet.DoesNotExist:
-        latest_tweets = t.search.tweets(q=SEARCH_TERM)['statuses']
+        latest_tweets = t.search.tweets(q=search_term)['statuses']
     else:
         last_id = latest_db_tweet.tweet_id
         latest_tweets = t.search.tweets(
-            q=SEARCH_TERM, since_id=last_id)['statuses']
+            q=search_term, since_id=last_id)['statuses']
 
     for tweet in latest_tweets:
         approvabletweet = ApprovableTweet()
@@ -82,12 +84,24 @@ def getmoretweets(request):
             tweet['created_at'], '%a %b %d %H:%M:%S +0000 %Y')[0:6]))
         approvabletweet.tweet_date = created_time
         approvabletweet.tweet_author = tweet['user']['name']
-        approvabletweet.tweet_author_pic_url = tweet['user']['profile_image_url']
+        approvabletweet.tweet_author_pic_url = \
+            tweet['user']['profile_image_url']
         approvabletweet.save()
 
     message = {
         'message': 'Added {} more tweets.'.format(len(latest_tweets)),
         'tweets_added': len(latest_tweets),
     }
-    # return HttpResponse(simplejson.dumps(message), mimetype="application/json")
     return redirect(index)
+
+
+def get_search_term():
+    try:
+        setting = Setting.objects.get(name='search_term')
+    except Setting.DoesNotExist:
+        setting = Setting()
+        setting.name = 'search_term'
+        setting.value = DEFAULT_SEARCH_TERM
+        setting.save()
+    finally:
+        return setting.value

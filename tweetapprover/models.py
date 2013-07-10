@@ -28,3 +28,11 @@ class ApprovableTweet(models.Model):
     def __unicode__(self):
         return "Tweet ({status})".format(
             status=ApprovableTweet.STATUS_TEXT[self.status])
+
+
+class Setting(models.Model):
+    name = models.CharField(max_length=100, primary_key=True)
+    value = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.name

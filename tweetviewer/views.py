@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from tweetapprover.models import ApprovableTweet
-from tweetapprover.views import SEARCH_TERM
+from tweetapprover.views import get_search_term
 from django.utils import simplejson
 from datetime import datetime
 
@@ -19,7 +19,7 @@ def index(request):
     """Displays approved tweets in a nice format."""
     after_id = request.GET.get('after_id')
     return render_to_response('twitterviewer/index.html', {
-        'searchterm': SEARCH_TERM,
+        'searchterm': get_search_term(),
         # 'tweets': get_tweets(after_id),
     })
 
